@@ -9,7 +9,11 @@ export const config = {
     port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379,
     username: process.env.REDIS_USERNAME || undefined,
     password: process.env.REDIS_PASSWORD || undefined,
-    tls: process.env.REDIS_TLS === "true" ? {} : undefined,
+    tls: process.env.REDIS_TLS === "true" ? {
+      key: fs.readFileSync(process.env.REDIS_KEY_PATH, "utf8"),
+      cert: fs.readFileSync(process.env.REDIS_CERT_PATH, "utf8"),
+      ca: fs.readFileSync(process.env.REDIS_CA_PATH, "utf8"),
+    } : undefined,
   },
   queueCacheSize: process.env.QUEUE_CACHE_SIZE ? parseInt(process.env.QUEUE_CACHE_SIZE) : 100,
   debugEnabled: process.env.DEBUG === "true",
